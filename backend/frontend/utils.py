@@ -19,6 +19,9 @@ class BaseMixin:
             return []
 
     def get_data_schemas(self, name: str, username: str) -> list:
+        """
+        Return a list with data genereted files
+        """
         path_schemas = os.path.join(settings.MEDIA_ROOT, username, 'data_schemas')
         if not os.path.exists(path_schemas):
             os.mkdir(path_schemas)
@@ -37,6 +40,9 @@ class BaseMixin:
                                                               f'{schema_name}_{date}.csv'))
 
     def save_schema(self, data: dict, username: str) -> bool:
+        """
+        Save change in schema
+        """
         path_schemas = os.path.join(settings.MEDIA_ROOT, username)
 
         for file_name in os.listdir(path_schemas):
@@ -61,6 +67,9 @@ class BaseMixin:
             return False
 
     def data_generate(self, rows: int, name: str, username: str):
+        """
+        Generate data for scheme
+        """
         schema_info = self.get_schema_info(name, username)
         data_for_write = []
         for i in range(rows):

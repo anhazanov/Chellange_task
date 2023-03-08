@@ -39,6 +39,9 @@ class Schemas(View, BaseMixin):
 
 
 class OneSchemas(View, BaseMixin):
+    """
+    Page with actions for one schema
+    """
     context = {}
 
     def get(self, request, name):

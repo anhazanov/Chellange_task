@@ -1,0 +1,40 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+{% block content%}
+<div>
+  <h3 class="sub-title">Data schemas</h3>
+  <div class="d-flex">
+  <a type="button" class="btn btn-success btn_new_pr" href="{% url 'edit_scheme' name='new_schema' %}">New schema</a>
+  </div>
+</div>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Modified</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if schemas_list %}
+        {% for schema in schemas_list %} 
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td><a href="{% url 'schemas' name=schema.name %}">{{ schema.name }}</a></td>
+          <td>{{ schema.modified }}</td>
+          <td><a href="{% url 'edit_scheme' name=schema.name %}">Edit scheme</a> | 
+            <a href="{% url 'delete_scheme' name=schema.name %}" class="delete_link">Delete</a></td>
+        </tr>
+        {% endfor %}
+      {% else %}
+      <tr>
+        <th scope="row">You don't have any shema yet</th>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+
+{% endblock %}

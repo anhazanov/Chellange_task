@@ -1,0 +1,123 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+{% block content %}
+<div>
+    <form method="post" action="{% url 'edit_scheme' name=name %}">
+        {% csrf_token %}
+        <h3 class="sub-title">{% if name != 'new_schema' %} {{name}} {% else %} Create new schema {% endif %}</h3>
+        <div class="d-flex">
+            <button type="Submit" class="btn btn-success btn_new_pr" >Submit</button>
+        </div>
+        <div style="width: 50%;">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td scope="row" class="td_25">
+                        <label for="pet-name_input">Schema's name</label><br />
+                        <input name="name_schema" id="name_input" value="{% if name != 'new_schema' %} {{ name }} {% endif %}"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>    
+        <br /><br />
+        <h6>Schema columns</h3>
+        <table class="table">
+            <tbody>
+                {% if name == 'new_schema' or not schema_info %}
+                <tr class="clone_tr">
+                    <td scope="row" class="td_25">
+                        <label for="pet-name_input">Name</label><br />
+                        <input name="name_input" id="name_input" />
+                    </td>
+                    <td class="td_25">
+                        <label for="type_select">Type</label><br />
+                        <select name="type_select" id="type_select">
+                            <option value="full_name">Full name</option>
+                            <option value="job">Job</option>
+                            <option value="phone_number">Phone number</option>
+                            <option value="email">Email</option>
+                            <option value="data">Date</option>
+                            <option value="none" selected> </option>
+                        </select>
+                    </td>
+                    <td class="td_25"></td>
+                    <td class="td_25">
+                        <label for="order">Order</label><br/>
+                        <input class="order" name="order" id="order" value="1"/>
+                    </td>
+                    <td class="td_25">
+                        <label for="order"></label><br/>
+                        <p class="delete_p">Delete</p>
+                    </td>
+                </tr>    
+                {% else %}
+                    {% for column in schema_info %}
+                    <tr class="clone_tr">
+                        <td scope="row" class="td_25">
+                            <label for="pet-name_input">Name</label><br />
+                            <input class="name_input" name="name_input" id="name_input" value="{{ column.name }}"/>
+                        </td>
+                        <td class="td_25">
+                            <label for="type_select">Type</label><br />
+                            <select class="type_select" name="type_select" id="type_select">
+                                <option value="full name">full name</option>
+                                <option value="job">job</option>
+                                <option value="phone number">phone number</option>
+                                <option value="email">email</option>
+                                <option value="data">date</option>
+                                <option value="none" selected> </option>
+                            </select>
+                        </td>
+                        <td class="td_25"></td>
+                        <td class="td_25">
+                            <label for="order">Order</label><br/>
+                            <input class="order" name="order" id="order" value="{{ column.order }}"/>
+                        </td>
+                        <td class="td_25">
+                            <label for="order"></label><br/>
+                            <p class="delete_p">Delete</p>
+                        </td>
+                    </tr>
+                    <script>
+                        $(function() {
+                            let temp="{{ column.type }}"; 
+                            let index="{{ column.order }}" - 1;
+                            $(".type_select").eq(index).val(temp);
+                        });
+                    </script>                   
+                    {% endfor %}
+                {% endif %}
+
+            
+            </tbody>
+        </table>
+    </form>
+</div>
+<button class="add_box">Add column</button>
+
+
+<script>
+   $(document).ready(function(){
+        $(".add_box").click(function(){
+            let last_order = $(".order:last").val()
+            $(".clone_tr").eq(0).clone().insertAfter(".clone_tr:last");
+            $(".type_select:last").val("none")
+            $(".name_input:last").val("")
+            $(".order:last").val(Number(last_order) + 1)
+        });
+
+        $(".delete_p").click(function(){
+            const index = $('.delete_p').index(this);
+            console.log(index)
+            $(".clone_tr").eq(index).remove()
+        });
+    }); 
+    
+    
+</script>
+
+
+
+{% endblock %}

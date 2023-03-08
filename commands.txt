@@ -1,0 +1,8 @@
+Run docker's command. Input from main directory.
+
+Build docker-compose:
+docker-compose -f ./compose/docker-compose-dev.yml build --build-arg CUID=1001
+
+Up docker-compose
+docker-compose -f ./compose/docker-compose-dev.yml up
+

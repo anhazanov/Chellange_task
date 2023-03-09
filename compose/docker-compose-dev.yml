@@ -2,16 +2,16 @@ version: "3.9"
 services:
   api:
     build:
-      context: ../backend
+      context: ../main_app
       dockerfile: ./Dockerfile
     container_name: backend_api
     ports:
       - 8000:8000
     env_file:
-      - ../backend/env/development/.env
+      - ../main_app/env/development/.env
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ../backend:/home/django/app
+      - ../main_app:/home/django/app
     networks:
       - backend-api-net
       - backend-db-net
@@ -21,14 +21,14 @@ services:
   db:
     image: postgres:15.2-alpine
     env_file:
-      - ../backend/env/development/.db.env
+      - ../main_app/env/development/.db.env
     ports:
       - 5433:5432
-    container_name: backend-db
+    container_name: main_app-db
     networks:
       - backend-db-net
     volumes:
-      - backend-data-storage:/var/lib/postgesql/data
+      - main_app-data-storage:/var/lib/postgesql/data
 
 networks:
   backend-api-net:

@@ -56,7 +56,7 @@
             <th scope="col">Actions</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody class="tbody_id">
         {% if data_schemas %}
             {% for file in data_schemas %} 
             <tr class="clone_tr">
@@ -76,20 +76,28 @@
 </div>
 <script>
     function funcSuccess(data) {
-        console.log($(".counter_th").length)
+        const obj = JSON.parse(data);
+        $('.new_tr').remove();
+        let last_counter = $(".counter_th").length;
+        let link = `/media/{{user}}/data_schemas/${obj.file_name}`
+        let created = obj.date
+        let new_tr = `<tr class="new_tr"> \
+                        <th scope="row" class="counter">${Number(last_counter) + 1}</th>\
+                        <td class="date_mod">${created}</td>\
+                        <td><p class="ready">ready</p></td>\
+                        <td><a href="${link}" download>Download</a></td> </tr>`;
+        $('.tbody_id:last').append(new_tr);
     };
 
     function funcBefore() {
-        console.log('Before');
         let last_counter = $(".counter_th").length;
-        console.log(last_counter);
-        let clone_tr = `<tr class="clone_tr"> \
+        let new_tr = `<tr class="new_tr"> \
                         <th scope="row" class="counter">${Number(last_counter) + 1}</th>\
                         <td class="date_mod"></td>\
                         <td><p class="processing">processing</p></td>\
                         <td></td> </tr>`;
-
-        $(clone_tr).insertAfter(".clone_tr:last");
+        
+        $('.tbody_id:last').append(new_tr);
     };
 
     $(document).ready(function(){

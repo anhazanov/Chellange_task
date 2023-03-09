@@ -86,6 +86,8 @@ class BaseMixin:
                         row_i.append(self.generate_email())
                     case {'name': _, 'type': 'data', 'order': _}:
                         row_i.append(self.generate_data())
+                    case _:
+                        row_i.append(' ')
             data_for_write.append(row_i)
         return data_for_write
 
@@ -106,7 +108,7 @@ class BaseMixin:
     def generate_phone_number(cls):
         letters = string.digits
         phone_number = ''.join(random.choice(letters) for i in range(random.randint(11, 12)))
-        return '+' + phone_number
+        return f'+{phone_number}'
 
     @classmethod
     def generate_email(cls):

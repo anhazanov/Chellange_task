@@ -137,16 +137,23 @@ class BaseMixin:
     @classmethod
     def _build_data_header(cls, data:dict) -> list:
         count = 1
+        allow_types = ['full name', 'job', 'phone number', 'email', 'data']
         header_list = []
 
         for i in range(len(data.get('order'))):
             for el in data.get('order'):
                 if el == str(count):
                     el_index = data.get('order').index(el)
-                    header_list.append(
-                        f'{data.get("name_input")[el_index]} ({data.get("type_select")[el_index]})'
-                    )
+                    if data.get("type_select") in allow_types:
+                        header_list.append(
+                            f'{data.get("name_input")[el_index]} ({data.get("type_select")[el_index]})'
+                        )
+                    else:
+                        header_list.append(
+                            f'{data.get("name_input")[el_index]} (type is not selected)'
+                        )
                     count += 1
+
         return header_list
 
     @classmethod
